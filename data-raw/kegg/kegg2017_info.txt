@@ -1,0 +1,4 @@
+pathway          KEGG Pathway Database
+path             Release 81.0+/01-23, Jan 17
+                 Kanehisa Laboratories
+                 481,160 entries

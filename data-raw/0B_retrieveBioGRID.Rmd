@@ -1,0 +1,128 @@
+---
+title: "BioGRID database"
+author: "Sergio Picart-Armada"
+date: "22 January 2017"
+output: html_document
+bibliography: "references/references.bib"
+---
+
+Load the data
+```{r, message=FALSE, warning=FALSE}
+library(data.table)
+library(igraph)
+
+source("helpers/largestcc.R")
+
+df <- fread(
+  "~/all/devel/datasets/bioinfo/databases/BioGRID/BIOGRID-ALL-3.4.140.tab2.txt",
+  stringsAsFactors = FALSE,
+  na.strings = "-")
+df <- df[df$`Organism Interactor A` == "9606" &
+           df$`Organism Interactor B` == "9606", ]
+```
+
+Summary of the raw data for Homo sapiens in BioGRID: 
+
+```{r, echo=FALSE}
+dim(df)
+
+df.slim <- df[, c("Entrez Gene Interactor A",
+                  "Entrez Gene Interactor B",
+                  "Author",
+                  "Throughput"), with = F]
+```
+
+
+The curation of the database will depend on whether the experimental source is low or high throughput. We will build a graph having edges dated before 2011, and each edge will ponderate the confidence of the studies that support it. To this end, we collapse the multiedges of the graph and retain the number of low and high throughput publications.
+
+```{r}
+table(df.slim$Throughput)
+
+df.slim$Year <- as.numeric(
+  gsub("(.+\\()(\\d{4})(\\))", "\\2", df.slim$Author))
+df.slim$Author <- NULL
+
+graph.base <- graph_from_data_frame(
+  df.slim[df.slim$Year < 2011], 
+  directed = F) 
+
+E(graph.base)$n_lt <- 1*(E(graph.base)$Throughput == "Low Throughput")
+E(graph.base)$n_ht <- 1*(E(graph.base)$Throughput != "Low Throughput")
+
+graph.base %<>% remove.edge.attribute("Throughput") %>%
+  remove.edge.attribute("Year")
+```
+
+The curation of the database will depend on whether the experimental source is low or high throughput, as the latter are supposed to give more spurious interactions. This scoring criterion is the same as described in [@Cao2014]
+
+```{r}
+graph.comb <- simplify(
+  graph.base, 
+  remove.loops = TRUE, 
+  edge.attr.comb = list(n_lt = "sum", n_ht = "sum"))
+
+scores.lt <- c(.8, .9, .95, .95)
+scores.ht <- c(.25, .5, .75, .85)
+scores.cap <- .95
+frac.ht <- .05
+
+vec.lt <- E(graph.comb)$n_lt
+vec.ht <- E(graph.comb)$n_ht
+
+E(graph.comb)$weight <- sapply(
+  1:ecount(graph.comb), 
+  function(edgex) {
+    n_lt <- vec.lt[edgex]
+    n_ht <- vec.ht[edgex]
+    
+    n_lt4 <- min(n_lt, 4)
+    n_ht4 <- min(n_ht, 4)
+    
+    
+    if (n_ht4 == 0) {
+      if (n_lt4 == 0) return(NA)
+      return(scores.lt[n_lt4])
+    } else {
+      if (n_lt4 == 0) return(scores.ht[n_ht4])
+      return(min(
+        scores.cap,  
+        scores.lt[n_lt4] + frac.ht*n_ht
+      ))
+    }
+  }
+)
+```
+
+Let's see the weights of the curated graph. Also, as the difference between all the graph and its largest connected component is so small, the latter will be kept for network analysis.
+
+```{r}
+biogrid2011 <- graph.comb %>%
+    remove.edge.attribute("n_lt") %>% 
+    remove.edge.attribute("n_ht") %>%
+    largestcc
+comment(biogrid2011) <- paste0(
+  "Generated on ", 
+  date(), 
+  " using the file 0B_retrieveBioGRID.RMD ", 
+  "and BioGRID version ", 
+  "BIOGRID-ALL-3.4.140.tab2.txt"
+)  
+
+hist(E(biogrid2011)$weight, 
+     main = "Weight of BioGRID interactions", 
+     breaks = 40)
+
+# Nodes before largest CC
+graph.comb
+
+# Nodes after largest CC
+biogrid2011
+
+# Save the data
+filename <- "biogrid2011.RData"
+if (!file.exists(filename)) 
+  save(biogrid2011, 
+       file = filename, 
+       compress = "xz")
+```
+

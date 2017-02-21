@@ -1,0 +1,15 @@
+Package: retroData
+Type: Package
+Title: Data for benchmarking gene prediction using networks
+Version: 0.0.2
+Date: 2017-02-21
+Author: Sergio Picart-Armada
+Maintainer: Sergio Picart-Armada <sergi.picart@upc.edu>
+Description: Data to predict KEGG pathways from 2017 
+  using KEGG pathways from 2011 and BioGRID protein-protein 
+  interaction network from the same year.
+Depends: R (>= 3.2)
+License: GPL-3
+LazyData: TRUE
+RoxygenNote: 6.0.1
+biocViews: Pathways, KEGG

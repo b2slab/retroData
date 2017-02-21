@@ -1,0 +1,16 @@
+Experiment type,Confidence score
+Affinity Capture-Luminescence,0.5
+Affinity Capture-MS,0.5
+Affinity Capture-RNA,0.7
+Affinity Capture-Western,0.5
+Biochemical Activity,0.5
+Co-crystal Structure,0.99
+Co-fractionation,0.7
+Co-purification,0.7
+Far Western,0.5
+FRET,0.7
+PCA,0.3
+Protein-peptide,0.7
+Protein-RNA,0.3
+Reconstituted Complex,0.3
+Two-hybrid,0.3

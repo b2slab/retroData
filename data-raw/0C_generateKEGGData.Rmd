@@ -1,0 +1,95 @@
+---
+title: "KEGG pathway database"
+author: "Sergio Picart-Armada"
+date: "23 January 2017"
+output: html_document
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(KEGG.db)
+library(magrittr)
+library(igraph)
+library(plyr)
+
+source("helpers/sanitise.R")
+load("biogrid2011.RData")
+
+names.genes <- V(biogrid2011)$name
+```
+
+Newer version of KEGG, beginning of 2017
+```{r}
+df.kegg2017 <- read.table(
+  "kegg/kegg2017_pathways.txt", 
+  stringsAsFactors = FALSE
+)
+df.kegg2017[, 1] %<>% sanitise(category = "pathway", organism = "hsa")
+df.kegg2017[, 2] %<>% sanitise(category = "gene", organism = "hsa")
+info.kegg2017 <- readLines("kegg/kegg2017_info.txt")
+
+names2017 <- unique(df.kegg2017[, 1])
+```
+
+
+Older version of KEGG, 2011
+```{r, message=FALSE, warning=FALSE}
+# Version and date
+info.kegg2011 <- KEGG.db::KEGG_dbInfo()
+info.kegg2011
+
+kegg2011 <- as.list(KEGGPATHID2EXTID)
+names2011 <- names(kegg2011)[grepl("hsa\\d{5}", names(kegg2011))] %>% sort
+```
+
+Concordance with pathway names
+```{r}
+length(names2011)
+length(names2017)
+names.common <- intersect(names2011, names2017)
+length(names.common)
+```
+
+Intersect pathways with network and make sure that pathways have at least one gene in 2011 and 2017. Make sure as well that there is a change 
+```{r}
+kegg2011 <- lapply(
+  kegg2011[names.common],
+  function(path) sort(intersect(path, names.genes)))
+
+kegg2017 <- plyr::dlply(
+  df.kegg2017, 
+  "V1", 
+  function(path) sort(intersect(path$V2, names.genes)))[names.common]
+attributes(kegg2017) <- list(names = names(kegg2017))
+
+# Now both have the same ordenation, so...
+# pathways.nonempty <- (plyr::laply(kegg2011, length) != 0) & 
+  # (plyr::laply(kegg2017, length) != 0)
+
+pathways.valid <- plyr::laply(
+  names(kegg2011), 
+  function(n) {
+    p_old <- kegg2011[[n]]
+    p_new <- kegg2017[[n]]
+    
+    if (length(p_old) == 0) return(FALSE)
+    length(setdiff(p_new, p_old)) > 0
+  }
+)
+
+kegg2011 <- kegg2011[pathways.valid]
+kegg2017 <- kegg2017[pathways.valid]
+
+length(unlist(kegg2011))
+length(unlist(kegg2017))
+```
+
+Save the pathways
+```{r}
+save(kegg2011, 
+     file = "kegg2011.RData", 
+     compress = "xz")
+save(kegg2017, 
+     file = "kegg2017.RData", 
+     compress = "xz")
+```
+
