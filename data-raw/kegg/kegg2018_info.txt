@@ -1,0 +1,17 @@
+T01001           Homo sapiens (human) KEGG Genes Database
+hsa              Release 87.0+/08-10, Aug 18
+                 Kanehisa Laboratories
+                 38,735 entries
+
+linked db        pathway
+                 brite
+                 module
+                 ko
+                 genome
+                 enzyme
+                 network
+                 disease
+                 drug
+                 ncbi-geneid
+                 ncbi-proteinid
+                 uniprot

@@ -9,7 +9,7 @@ retrospective data}
 \description{
 The retroData package provides the BioGRID
 protein-protein interaction
-network from 2011 and KEGG pathways from 2011 and 2017.
+network from 2011 and KEGG pathways from 2011 and 2018.
 This can be useful for validating the performance of
 network-based gene prediction methods in a six year
 horizon case.
@@ -17,7 +17,7 @@ horizon case.
 \section{Data objects}{
  the pathways can be found at
 \link[retroData]{kegg2011} and
-\link[retroData]{kegg2017}, whereas the network is
+\link[retroData]{kegg2018}, whereas the network is
 contained in \link[retroData]{biogrid2011}
 }
 

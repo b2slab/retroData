@@ -13,9 +13,9 @@ The outdated bioconductor repository KEGG.db
 kegg2011
 }
 \description{
-123 KEGG pathways from 14th March, 2011. These pathways
+139 KEGG pathways from 14th March, 2011. These pathways
 contain entrez ids and are guaranteed to have new genes
-in \link[retroData]{kegg2017} and to perfectly
+in \link[retroData]{kegg2018} and to perfectly
 map to the \link[retroData]{biogrid2011}
 network.
 }

@@ -26,4 +26,4 @@ and the three objects:
 
 * biogrid2011: PPI network from before 2011
 * kegg2011: KEGG pathways from 2011
-* kegg2017: KEGG pathways from 2017
+* kegg2018: KEGG pathways from 2018

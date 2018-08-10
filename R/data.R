@@ -3,14 +3,14 @@
 #'
 #' The retroData package provides the BioGRID
 #' protein-protein interaction
-#' network from 2011 and KEGG pathways from 2011 and 2017.
+#' network from 2011 and KEGG pathways from 2011 and 2018.
 #' This can be useful for validating the performance of
 #' network-based gene prediction methods in a six year
 #' horizon case.
 #'
 #' @section Data objects: the pathways can be found at
 #' \link[retroData]{kegg2011} and
-#' \link[retroData]{kegg2017}, whereas the network is
+#' \link[retroData]{kegg2018}, whereas the network is
 #' contained in \link[retroData]{biogrid2011}
 #'
 #' @docType package
@@ -38,9 +38,9 @@ NULL
 
 #' KEGG pathways from 2011
 #'
-#' 123 KEGG pathways from 14th March, 2011. These pathways
+#' 139 KEGG pathways from 14th March, 2011. These pathways
 #' contain entrez ids and are guaranteed to have new genes
-#' in \link[retroData]{kegg2017} and to perfectly
+#' in \link[retroData]{kegg2018} and to perfectly
 #' map to the \link[retroData]{biogrid2011}
 #' network.
 #'
@@ -50,9 +50,9 @@ NULL
 #' \url{http://www.bioconductor.org/packages/release/data/annotation/html/KEGG.db.html}
 "kegg2011"
 
-#' KEGG pathways from 2017
+#' KEGG pathways from 2018
 #'
-#' 123 KEGG pathways from 17th January, 2017. These pathways
+#' 139 KEGG pathways from 18th August 2018. These pathways
 #' contain entrez ids and are guaranteed to have new genes
 #' compared to \link[retroData]{kegg2011} and to
 #' perfectly map to the \link[retroData]{biogrid2011}
@@ -61,4 +61,4 @@ NULL
 #' @format A list with 123 KEGG pathways
 #'
 #' @source The KEGG rest API \url{rest.kegg.jp}
-"kegg2017"
+"kegg2018"

@@ -17,17 +17,17 @@ load("biogrid2011.RData")
 names.genes <- V(biogrid2011)$name
 ```
 
-Newer version of KEGG, beginning of 2017
+Newer version of KEGG, 2018
 ```{r}
-df.kegg2017 <- read.table(
-  "kegg/kegg2017_pathways.txt", 
+df.kegg2018 <- read.table(
+  "kegg/kegg2018_pathways.txt", 
   stringsAsFactors = FALSE
 )
-df.kegg2017[, 1] %<>% sanitise(category = "pathway", organism = "hsa")
-df.kegg2017[, 2] %<>% sanitise(category = "gene", organism = "hsa")
-info.kegg2017 <- readLines("kegg/kegg2017_info.txt")
+df.kegg2018[, 1] %<>% sanitise(category = "pathway", organism = "hsa")
+df.kegg2018[, 2] %<>% sanitise(category = "gene", organism = "hsa")
+info.kegg2018 <- readLines("kegg/kegg2018_info.txt")
 
-names2017 <- unique(df.kegg2017[, 1])
+names2018 <- unique(df.kegg2018[, 1])
 ```
 
 
@@ -44,32 +44,32 @@ names2011 <- names(kegg2011)[grepl("hsa\\d{5}", names(kegg2011))] %>% sort
 Concordance with pathway names
 ```{r}
 length(names2011)
-length(names2017)
-names.common <- intersect(names2011, names2017)
+length(names2018)
+names.common <- intersect(names2011, names2018)
 length(names.common)
 ```
 
-Intersect pathways with network and make sure that pathways have at least one gene in 2011 and 2017. Make sure as well that there is a change 
+Intersect pathways with network and make sure that pathways have at least one gene in 2011 and 2018. Make sure as well that there is a change 
 ```{r}
 kegg2011 <- lapply(
   kegg2011[names.common],
   function(path) sort(intersect(path, names.genes)))
 
-kegg2017 <- plyr::dlply(
-  df.kegg2017, 
+kegg2018 <- plyr::dlply(
+  df.kegg2018, 
   "V1", 
   function(path) sort(intersect(path$V2, names.genes)))[names.common]
-attributes(kegg2017) <- list(names = names(kegg2017))
+attributes(kegg2018) <- list(names = names(kegg2018))
 
 # Now both have the same ordenation, so...
 # pathways.nonempty <- (plyr::laply(kegg2011, length) != 0) & 
-  # (plyr::laply(kegg2017, length) != 0)
+  # (plyr::laply(kegg2018, length) != 0)
 
 pathways.valid <- plyr::laply(
   names(kegg2011), 
   function(n) {
     p_old <- kegg2011[[n]]
-    p_new <- kegg2017[[n]]
+    p_new <- kegg2018[[n]]
     
     if (length(p_old) == 0) return(FALSE)
     length(setdiff(p_new, p_old)) > 0
@@ -77,10 +77,10 @@ pathways.valid <- plyr::laply(
 )
 
 kegg2011 <- kegg2011[pathways.valid]
-kegg2017 <- kegg2017[pathways.valid]
+kegg2018 <- kegg2018[pathways.valid]
 
 length(unlist(kegg2011))
-length(unlist(kegg2017))
+length(unlist(kegg2018))
 ```
 
 Save the pathways
@@ -88,8 +88,8 @@ Save the pathways
 save(kegg2011, 
      file = "kegg2011.RData", 
      compress = "xz")
-save(kegg2017, 
-     file = "kegg2017.RData", 
+save(kegg2018, 
+     file = "kegg2018.RData", 
      compress = "xz")
 ```
 

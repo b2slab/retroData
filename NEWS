@@ -1,0 +1,10 @@
+CHANGES IN VERSION 0.1.0
+------------------------
+
+    o Switched `kegg2017` to `kegg2018` (mid August),
+      about 15 new pathways with new genes
+
+CHANGES IN VERSION 0.0.2
+------------------------
+
+    o First commit with data from `kegg2011`, `kegg2017` and `biogrid2011`
