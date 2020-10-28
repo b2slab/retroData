@@ -37,3 +37,5 @@ List of data objects from the three main sections in the article:
   - `biogrid2011` PPI network from before 2011
   - `kegg2011`: KEGG pathways from 2011
   - `kegg2018`: KEGG pathways from 2018
+
+The code to perform the analysis can be found in our [diffuBench repository](https://github.com/b2slab/diffuBench).
