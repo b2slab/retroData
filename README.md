@@ -39,3 +39,6 @@ List of data objects from the three main sections in the article:
   - `kegg2018`: KEGG pathways from 2018
 
 The code to perform the analysis can be found in our [diffuBench repository](https://github.com/b2slab/diffuBench).
+
+Please note that the data come from various sources and are provided for reproducibility of the original manuscript. 
+**Only the necessary files are provided, and any further use of the data should adhere to the licensing terms of its source**.
