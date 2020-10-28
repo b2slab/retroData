@@ -119,7 +119,7 @@ graph.comb
 biogrid2011
 
 # Save the data
-filename <- "biogrid2011.RData"
+filename <- "../data/biogrid2011.RData"
 if (!file.exists(filename)) 
   save(biogrid2011, 
        file = filename, 

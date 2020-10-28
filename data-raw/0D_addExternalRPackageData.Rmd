@@ -1,0 +1,42 @@
+---
+title: "Add data from other R data pacakges"
+author: "Sergio Picart-Armada"
+date: "20 October 2020"
+output: html_document
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(igraphdata)
+library(ALL)
+library(DLBCL)
+```
+
+List of data objects to resave
+
+```{r}
+# igraphdata
+data("yeast")
+
+# DLBCL
+data("interactome")
+data("dataLym")
+
+# ALL
+data("ALL")
+```
+
+Resave
+
+```{r}
+save(yeast, file = "../data/yeast.RData", compress = "xz")
+save(interactome, file = "../data/interactome.RData", compress = "xz")
+save(dataLym, file = "../data/dataLym.RData", compress = "xz")
+save(ALL, file = "../data/ALL.RData", compress = "xz")
+```
+
+SessionInfo
+
+```{r}
+sessionInfo()
+```
+

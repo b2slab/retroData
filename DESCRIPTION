@@ -1,15 +1,21 @@
 Package: retroData
 Type: Package
-Title: Data for benchmarking gene prediction using networks
-Version: 0.1.0
-Date: 2018-8-10
+Title: Data for assessing bias in network propagation methods
+Version: 0.2.0
+Date: 2020-10-26
 Author: Sergio Picart-Armada
 Maintainer: Sergio Picart-Armada <sergi.picart@upc.edu>
-Description: Data to predict KEGG pathways from 2018 
-  using KEGG pathways from 2011 and BioGRID protein-protein 
-  interaction network from the same year.
+Description: Companion data package for the article "The effect of statistical 
+  normalization on network propagation scores", 
+  https://doi.org/10.1093/bioinformatics/btaa896. Contains data for DLBCL 
+  analysis (KEGG pathway-gene mapping, Release 83.0+/09-09) and for 
+  the retrospective pathway prediction (legacy KEGG pathways 
+  from 2011 in KEGG.db, a more current mapping from 2018, 
+  Release 87.0+/08-10), and the BioGRID protein-protein 
+  interaction network from 2018.
 Depends: R (>= 3.2)
+Encoding: UTF-8
 License: GPL-3
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 biocViews: Pathways, KEGG

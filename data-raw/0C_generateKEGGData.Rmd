@@ -35,6 +35,7 @@ Older version of KEGG, 2011
 ```{r, message=FALSE, warning=FALSE}
 # Version and date
 info.kegg2011 <- KEGG.db::KEGG_dbInfo()
+info.kegg2011 <- setNames(info.kegg2011$value, info.kegg2011$name)
 info.kegg2011
 
 kegg2011 <- as.list(KEGGPATHID2EXTID)
@@ -84,12 +85,45 @@ length(unlist(kegg2018))
 ```
 
 Save the pathways
+
 ```{r}
+comment(kegg2011) <- info.kegg2011
 save(kegg2011, 
-     file = "kegg2011.RData", 
+     file = "../data/kegg2011.RData", 
      compress = "xz")
+comment(kegg2018) <- info.kegg2018
 save(kegg2018, 
-     file = "kegg2018.RData", 
+     file = "../data/kegg2018.RData", 
+     compress = "xz")
+```
+
+On a separate matter, load the KEGG data used for DLBCL (slightly different version) and save its tables
+
+```{r}
+keggdlbcl <- read.table(
+  "kegg_dlbcl/kegg_gene2pathway.txt", 
+  stringsAsFactors = FALSE
+)
+keggdlbcl[, 1] %<>% sanitise(category = "pathway", organism = "hsa")
+keggdlbcl[, 2] %<>% sanitise(category = "gene", organism = "hsa")
+
+info.keggdlbcl <- readLines("kegg_dlbcl/kegg_info.txt")
+
+head(keggdlbcl)
+```
+
+Number of pathways:
+
+```{r}
+dim(keggdlbcl)
+length(unique(keggdlbcl[, 1]))
+```
+
+
+```{r}
+comment(keggdlbcl) <- info.keggdlbcl
+save(keggdlbcl, 
+     file = "../data/keggdlbcl.RData", 
      compress = "xz")
 ```
 
